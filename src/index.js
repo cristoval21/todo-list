@@ -1,109 +1,43 @@
 import './style.css';
+import { TodoController } from './TodoController.js';
 
-class TodoItem {
-  constructor(title, description, dueDate, priority) {
-    this._title = title;
-    this._description = description;
-    this._dueDate = dueDate;
-    this._priority = priority;
-  }
+const refreshScreen = document.querySelector('#refresh-scren');
+const todoController = new TodoController();
 
-  getTitle() { 
-    return this._title;
-  }
+const btnAddItem = document.createElement('button');
+btnAddItem.type = 'button';
+btnAddItem.classList.add('button');
+btnAddItem.classList.add('project-card__button');
+btnAddItem.classList.add('project-card__button-add-item');
+btnAddItem.textContent = 'Add Item';
+btnAddItem.addEventListener('click', btnAddItemHandler);
 
-  getDescription() {
-    return this._description;
-  }
+todoController.getAllLists().forEach(todoList => {
+  const projectCard = document.createElement('div');
+  projectCard.classList.add('project-card');
 
-  getDueDate() {
-    return this._dueDate;
-  }
+  const projectCardHeader = document.createElement('div');
+  projectCardHeader.classList.add('project-card__header');
 
-  getPriority() {
-    return this._priority;
-  }
+  const projectCardTitle = document.createElement('h2');
+  projectCardTitle.classList.add('project-card__title');
+  projectCardTitle.textContent = todoList.getListName();
 
-  setTitle(newTitle) {
-    this._title = newTitle;
-  }
+  const projectCardList = document.createElement('ul');
+  projectCardList.classList.add('project-card__list');
 
-  setDescription(newDescription) {
-    this._description = newDescription;
-  }
+  projectCardHeader.appendChild(projectCardTitle);
+  projectCardHeader.appendChild(btnAddItem);
 
-  setDueDate(newDate) {
-    this._dueDate = newDate;
-  }
+  projectCard.appendChild(projectCardHeader);
+  projectCard.appendChild(projectCardList);
 
-  setPriority(newPriority) {
-    this._priority = newPriority;
-  }
+  document.body.appendChild(projectCard);
+});
+
+function btnAddItemHandler() {
+  console.log('clicked');
 }
 
-class TodoList {
-  #_list = [];
-
-  constructor(listName) {
-    this._listName = listName;
-  }
-
-  addItem(title, description, dueDate, priority) {
-    this.#_list.push(new TodoItem(title, description, dueDate, priority));
-  }
-
-  removeItem(itemIndex) {
-    this.#_list.splice(itemIndex, 1);
-  }
-
-  removeAllItems() {
-    this.#_list.slice(0, this.#_list.length);
-  }
-
-  getItem(itemIndex) {
-    return this.#_list[itemIndex];
-  }
-
-  getAllItems() {
-    return this.#_list;
-  }
-
-  static moveItem(itemIndex, oldList, newList) {
-    const item = oldList.getItem(itemIndex);
-    newList.addItem(
-      item.getTitle(),
-      item.getDescription(),
-      item.getDueDate(),
-      item.getPriority()
-    );
-    oldList.removeItem(itemIndex);
-  }
-}
-
-function TodoController() {
-  let lists = [
-    new TodoList('Default')
-  ];
-
-  function addItem(title, description, dueDate, priority, listIndex = 0) {
-    lists[listIndex].addItem(title, description, dueDate, priority);
-  }
-
-  function getList(listIndex = 0) {
-    return lists[listIndex];
-  }
-
-  function getAllLists() {
-    return lists;
-  }
-
-  return {
-    addItem,
-    getList,
-    getAllLists,
-  };
-}
-
-const todo = TodoController();
-todo.addItem('Get notebook', 'Get notebook from office', '20240-06-30', 'Default');
-console.log( todo.getAllLists() );
+const dialog = document.querySelector('.dialog-add-item');
+dialog.showModal();
