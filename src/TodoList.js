@@ -7,7 +7,7 @@ export class TodoList {
     this._listName = listName;
   }
 
-  getListName() {
+  getName() {
     return this._listName;
   }
 

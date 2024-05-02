@@ -1,8 +1,8 @@
-export function ModalController(listsName) {
-  const dialogAddItem = document.createElement('dialog');
-  dialogAddItem.classList.add('dialog');
-  dialogAddItem.classList.add('dialog-add-item__form');
+const dialogAddItem = document.createElement('dialog');
+dialogAddItem.classList.add('dialog');
+dialogAddItem.classList.add('dialog-add-item__form');
 
+export function buildModal(lists) {
   const form = document.createElement('form');
   form.classList.add('form');
   form.classList.add('dialog-add-item__form');
@@ -17,7 +17,8 @@ export function ModalController(listsName) {
 
   const inputTitle = document.createElement('input');
   inputTitle.type = 'text';
-  inputTitle.setAttribute('id', 'item-title');
+  inputTitle.id = 'item-title';
+  inputTitle.required = true;
 
   fieldTitle.appendChild(labelTitle);
   fieldTitle.appendChild(inputTitle);
@@ -33,7 +34,8 @@ export function ModalController(listsName) {
 
   const inputDescription = document.createElement('input');
   inputDescription.type = 'text';
-  inputDescription.setAttribute('id', 'item-description');
+  inputDescription.id = 'item-description';
+  inputDescription.required = true;
 
   fieldDescription.appendChild(labelDescription);
   fieldDescription.appendChild(inputDescription);
@@ -48,8 +50,9 @@ export function ModalController(listsName) {
   labelDue.textContent = 'Due date'
   
   const inputDue = document.createElement('input');
-  inputDue.type = 'text';
-  inputDue.setAttribute('id', 'item-due');
+  inputDue.type = 'date';
+  inputDue.id = 'item-due';
+  inputDue.required = true;
 
   fieldDue.appendChild(labelDue);
   fieldDue.appendChild(inputDue);
@@ -62,6 +65,7 @@ export function ModalController(listsName) {
   const radioPriorityDefault = document.createElement('input');
   radioPriorityDefault.type = 'radio';
   radioPriorityDefault.name = 'item-priority';
+  radioPriorityDefault.id = 'item-priority-default';
 
   const labelPriorityDefault = document.createElement('label');
   labelPriorityDefault.setAttribute('for', 'item-priority-default');
@@ -70,6 +74,7 @@ export function ModalController(listsName) {
   const radioPriorityImportant = document.createElement('input');
   radioPriorityImportant.type = 'radio';
   radioPriorityImportant.name = 'item-priority';
+  radioPriorityImportant.id = 'item-priority-important';
 
   const labelPriorityImportant = document.createElement('label');
   labelPriorityImportant.setAttribute('for', 'item-priority-important');
@@ -87,11 +92,51 @@ export function ModalController(listsName) {
 
   const labelLists = document.createElement('label');
   labelLists.setAttribute('for', 'item-lists');
+  labelLists.textContent = 'Select project';
   
   const selectLists = document.createElement('select');
+  selectLists.id = 'item-lists';
 
-  listsName.forEach(listName => {
-    const select = document.createElement('select');
-    select.setAttribute('')
+  lists.forEach(list => {
+    const listName = list.getName();
+    const optionLists = document.createElement('option');
+    optionLists.textContent = listName;
+
+    selectLists.appendChild(optionLists);
   });
+
+  fieldLists.appendChild(labelLists);
+  fieldLists.appendChild(selectLists);
+  form.appendChild(fieldLists);
+
+  // Button Add Item
+  const btnAddItem = document.createElement('button');
+  btnAddItem.type = 'submit';
+  btnAddItem.textContent = 'Add item';
+  btnAddItem.addEventListener('click', btnAddItemHandler);
+  form.appendChild(btnAddItem);
+
+  // Button Cancel
+  const btnCancel = document.createElement('button');
+  btnCancel.type = 'button';
+  btnCancel.textContent = 'Cancel';
+  btnCancel.addEventListener('click', close);
+  form.appendChild(btnCancel);
+
+  dialogAddItem.appendChild(form);
+  document.body.appendChild(dialogAddItem);
+}
+
+export function show() {
+  dialogAddItem.showModal();
+}
+
+function close() {
+  dialogAddItem.close();
+}
+
+function btnAddItemHandler(e) {
+  e.preventDefault();
+  console.log("item added");
+  close();
 }
