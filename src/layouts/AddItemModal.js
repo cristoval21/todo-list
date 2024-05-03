@@ -1,8 +1,11 @@
-const dialogAddItem = document.createElement('dialog');
-dialogAddItem.classList.add('dialog');
-dialogAddItem.classList.add('dialog-add-item__form');
+import { buildMainUI } from "./ScreenController";
+import { todoController } from "../components/TodoController";
 
 export function buildModal(lists) {
+  const dialogAddItem = document.createElement('dialog');
+  dialogAddItem.classList.add('dialog');
+  dialogAddItem.classList.add('dialog-add-item__form');
+
   const form = document.createElement('form');
   form.classList.add('form');
   form.classList.add('dialog-add-item__form');
@@ -35,7 +38,6 @@ export function buildModal(lists) {
   const inputDescription = document.createElement('input');
   inputDescription.type = 'text';
   inputDescription.id = 'item-description';
-  inputDescription.required = true;
 
   fieldDescription.appendChild(labelDescription);
   fieldDescription.appendChild(inputDescription);
@@ -92,14 +94,15 @@ export function buildModal(lists) {
 
   const labelLists = document.createElement('label');
   labelLists.setAttribute('for', 'item-lists');
-  labelLists.textContent = 'Select project';
+  labelLists.textContent = 'Select list';
   
   const selectLists = document.createElement('select');
   selectLists.id = 'item-lists';
 
-  lists.forEach(list => {
+  lists.forEach((list, index) => {
     const listName = list.getName();
     const optionLists = document.createElement('option');
+    optionLists.value = index;
     optionLists.textContent = listName;
 
     selectLists.appendChild(optionLists);
@@ -113,7 +116,20 @@ export function buildModal(lists) {
   const btnAddItem = document.createElement('button');
   btnAddItem.type = 'submit';
   btnAddItem.textContent = 'Add item';
-  btnAddItem.addEventListener('click', btnAddItemHandler);
+  btnAddItem.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      alert('Form is invalid');
+    } else {
+      btnAddItemHandler(
+        inputTitle.value,
+        inputDescription.value,
+        inputDue.value,
+        radioPriorityImportant.checked,
+        selectLists.value
+      );
+    }
+  });
   form.appendChild(btnAddItem);
 
   // Button Cancel
@@ -128,15 +144,23 @@ export function buildModal(lists) {
 }
 
 export function show() {
+  const dialogAddItem = document.querySelector('.dialog-add-item__form');
   dialogAddItem.showModal();
 }
 
 function close() {
+  const dialogAddItem = document.querySelector('.dialog-add-item__form');
   dialogAddItem.close();
 }
 
-function btnAddItemHandler(e) {
-  e.preventDefault();
-  console.log("item added");
+function btnAddItemHandler(title, description, dueDate, priority, listIndex) {
+  todoController.addItem(
+    title,
+    description,
+    dueDate,
+    priority,
+    listIndex,
+  )
+  buildMainUI();
   close();
 }

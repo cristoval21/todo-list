@@ -1,8 +1,9 @@
 import { TodoList } from './TodoList.js';
 
-export function TodoController() {
+export const todoController = function() {
   let lists = [
-    new TodoList('Default')
+    new TodoList('My List'),
+    new TodoList('Work')
   ];
 
   function addItem(title, description, dueDate, priority, listIndex = 0) {
@@ -22,4 +23,4 @@ export function TodoController() {
     getList,
     getAllLists,
   };
-}
+}();
