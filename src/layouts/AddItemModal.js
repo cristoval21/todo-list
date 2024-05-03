@@ -88,30 +88,6 @@ export function buildModal(lists) {
   fieldPriority.appendChild(labelPriorityImportant);
   form.appendChild(fieldPriority);
 
-  // Lists
-  const fieldLists = document.createElement('div');
-  fieldLists.classList.add('form__field');
-
-  const labelLists = document.createElement('label');
-  labelLists.setAttribute('for', 'item-lists');
-  labelLists.textContent = 'Select list';
-  
-  const selectLists = document.createElement('select');
-  selectLists.id = 'item-lists';
-
-  lists.forEach((list, index) => {
-    const listName = list.getName();
-    const optionLists = document.createElement('option');
-    optionLists.value = index;
-    optionLists.textContent = listName;
-
-    selectLists.appendChild(optionLists);
-  });
-
-  fieldLists.appendChild(labelLists);
-  fieldLists.appendChild(selectLists);
-  form.appendChild(fieldLists);
-
   // Button Add Item
   const btnAddItem = document.createElement('button');
   btnAddItem.type = 'submit';
@@ -126,7 +102,6 @@ export function buildModal(lists) {
         inputDescription.value,
         inputDue.value,
         radioPriorityImportant.checked,
-        selectLists.value
       );
     }
   });
@@ -153,13 +128,12 @@ function close() {
   dialogAddItem.close();
 }
 
-function btnAddItemHandler(title, description, dueDate, priority, listIndex) {
-  todoController.addItem(
+function btnAddItemHandler(title, description, dueDate, priority) {
+  todoController.addItemToActiveList(
     title,
     description,
     dueDate,
     priority,
-    listIndex,
   )
   buildMainUI();
   close();

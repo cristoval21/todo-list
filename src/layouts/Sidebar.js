@@ -1,6 +1,5 @@
 import { todoController } from "../components/TodoController";
-
-export let activeList = 0;
+import { getActiveListIndex, setActiveListIndex } from "../utilities/ActiveListIndex";
 
 export function buildSidebar(contentDiv) {
   const sidebar = document.createElement('div');
@@ -51,7 +50,7 @@ function retrieveListNames() {
     sidebarItem.dataset.listIndex = listIndex;
     sidebarItem.textContent = list.getName();
 
-    if (listIndex === activeList) {
+    if (listIndex === getActiveListIndex()) {
       sidebarItem.classList.add('sidebar__item--active');
     }
 
@@ -71,5 +70,5 @@ function setActiveItem(event) {
 
   event.target.classList.toggle('sidebar__item--active');
 
-  activeList = event.target.dataset.listIndex;
+  setActiveListIndex(event.target.dataset.listIndex);
 }

@@ -3,6 +3,9 @@
   --hover: #e0f2fe;
   --active-border: #38bdf8;
   --active-background: #e0f2fe;
+  --tertiary: #38bdf8;
+  --tertiary-hover: #0ea5e9;
+  --on-dark: #ffffff;
 }
 
 * {
@@ -16,31 +19,26 @@
   display: flex;
 }
 
-.project-card {
-  box-shadow:
-    2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
-    6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
-    12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
-    22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
-    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
-    100px 100px 80px rgba(0, 0, 0, 0.07)
-  ;
-  border-radius: 10px;
-  padding: 2rem;
-}
-
-.project-card__header {
-  display: flex;
-}
-
-.project-card__button-add-item {
-  margin-inline-start: auto;
-}
-
 .button {
   border: none;
   background-color: transparent;
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 500px;
+}
+
+.button__icon {
+  font-size: 1.5em;
+  margin-inline-start: 0.25em;
+}
+
+.button--primary {
+  background-color: var(--tertiary);
+  color: var(--on-dark);
+}
+
+.button--primary:hover {
+  background-color: var(--tertiary-hover);
 }
 
 .dialog {
@@ -49,12 +47,12 @@
   border-radius: 10px;
   padding: 2rem;
   box-shadow:
-    2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
-    6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
-    12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
-    22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
-    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
-    100px 100px 80px rgba(0, 0, 0, 0.07)
+    2.8px 2.8px 2.2px rgba(0, 0, 0, 0.008),
+    6.7px 6.7px 5.3px rgba(0, 0, 0, 0.012),
+    12.5px 12.5px 10px rgba(0, 0, 0, 0.015),
+    22.3px 22.3px 17.9px rgba(0, 0, 0, 0.018),
+    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.022),
+    100px 100px 80px rgba(0, 0, 0, 0.03)
   ;
   width: min(80vw, 500px);
 }
@@ -104,4 +102,28 @@
 
 .sidebar__input-add-list {
   width: 100%;
+}
+
+/* List */
+.list {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.list__container {
+  height: 100%;
+  padding: 2rem;
+  width: 100%;
+}
+
+.list__header {
+  display: flex;
+  align-items: center;
+}
+
+.list__button-add-item {
+  font-size: 1.25rem;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
 }
