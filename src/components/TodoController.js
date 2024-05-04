@@ -4,15 +4,18 @@ import { getActiveListIndex } from '../utilities/ActiveListIndex.js';
 export const todoController = function() {
   let lists = [
     new TodoList('My List'),
-    new TodoList('Work')
   ];
 
-  function addItem(title, description, dueDate, priority, listIndex) {
-    lists[listIndex].addItem(title, description, dueDate, priority);
+  function addItem(title, description, dueDate, listIndex) {
+    lists[listIndex].addItem(title, description, dueDate);
   }
   
-  function addItemToActiveList(title, description, dueDate, priority) {
-    lists[getActiveListIndex()].addItem(title, description, dueDate, priority);
+  function addItemToActiveList(title, description, dueDate) {
+    lists[getActiveListIndex()].addItem(title, description, dueDate);
+  }
+
+  function addList(listName) {
+    lists.push(new TodoList(listName));
   }
 
   function getList(listIndex) {
@@ -30,6 +33,7 @@ export const todoController = function() {
   return {
     addItem,
     addItemToActiveList,
+    addList,
     getList,
     getAllLists,
     getActiveList

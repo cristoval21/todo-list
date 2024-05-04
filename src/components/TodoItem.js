@@ -1,11 +1,11 @@
 export class TodoItem {
-  #_status = false;
+  #_starred = false;
+  #_completed = false;
 
-  constructor(title, description, dueDate, priority) {
+  constructor(title, description, dueDate) {
     this._title = title;
     this._description = description;
     this._dueDate = dueDate;
-    this._priority = priority;
   }
 
   getTitle() { 
@@ -20,12 +20,12 @@ export class TodoItem {
     return this._dueDate;
   }
 
-  getPriority() {
-    return this._priority;
+  getStarred() {
+    return this.#_starred;
   }
 
-  getStatus() {
-    return this.#_status;
+  getCompleted() {
+    return this.#_completed;
   }
 
   setTitle(newTitle) {
@@ -40,11 +40,11 @@ export class TodoItem {
     this._dueDate = newDate;
   }
 
-  setPriority(newPriority) {
-    this._priority = newPriority;
+  toggleStarred() {
+    this.#_starred = !this.#_starred;
   }
 
-  toggleStatus() {
-    this.#_status = !this.#_status;
+  toggleCompleted() {
+    this.#_completed = !this.#_completed;
   }
 }

@@ -1,4 +1,5 @@
 import { todoController } from '../components/TodoController.js';
+import * as AddItemModal from './AddItemModal.js';
 
 export function buildMainUI(contentDiv) {
   const list = document.createElement('div');
@@ -11,11 +12,20 @@ export function buildMainUI(contentDiv) {
 
   const listHeader = buildHeader();
   listContainer.appendChild(listHeader);
+
+  const listItems = buildListItems();
+  listContainer.appendChild(listItems);
 }
 
 export function refreshMainUI() {
   const listContainer = document.querySelector('.list__container');
   listContainer.textContent = '';
+
+  const listHeader = buildHeader();
+  listContainer.appendChild(listHeader);
+
+  const listItems = buildListItems();
+  listContainer.appendChild(listItems);
 }
 
 function btnAddItemHandler() {
@@ -36,6 +46,7 @@ function buildHeader() {
   btnAddItem.textContent = 'Add task'
   btnAddItem.classList.add('button');
   btnAddItem.classList.add('button--primary');
+  btnAddItem.classList.add('button--with-icon');
   btnAddItem.classList.add('list__button-add-item');
   btnAddItem.addEventListener('click', btnAddItemHandler);
   listHeader.appendChild(btnAddItem);

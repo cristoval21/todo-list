@@ -1,4 +1,4 @@
-import { buildMainUI } from "./ScreenController";
+import { buildMainUI, refreshMainUI } from "./ScreenController";
 import { todoController } from "../components/TodoController";
 
 export function buildModal(lists) {
@@ -54,39 +54,10 @@ export function buildModal(lists) {
   const inputDue = document.createElement('input');
   inputDue.type = 'date';
   inputDue.id = 'item-due';
-  inputDue.required = true;
 
   fieldDue.appendChild(labelDue);
   fieldDue.appendChild(inputDue);
   form.appendChild(fieldDue);
-
-  // Priority
-  const fieldPriority = document.createElement('div');
-  fieldPriority.classList.add('form__field');
-
-  const radioPriorityDefault = document.createElement('input');
-  radioPriorityDefault.type = 'radio';
-  radioPriorityDefault.name = 'item-priority';
-  radioPriorityDefault.id = 'item-priority-default';
-
-  const labelPriorityDefault = document.createElement('label');
-  labelPriorityDefault.setAttribute('for', 'item-priority-default');
-  labelPriorityDefault.textContent = 'Default';
-
-  const radioPriorityImportant = document.createElement('input');
-  radioPriorityImportant.type = 'radio';
-  radioPriorityImportant.name = 'item-priority';
-  radioPriorityImportant.id = 'item-priority-important';
-
-  const labelPriorityImportant = document.createElement('label');
-  labelPriorityImportant.setAttribute('for', 'item-priority-important');
-  labelPriorityImportant.textContent = 'Important';
-
-  fieldPriority.appendChild(radioPriorityDefault);
-  fieldPriority.appendChild(labelPriorityDefault);
-  fieldPriority.appendChild(radioPriorityImportant);
-  fieldPriority.appendChild(labelPriorityImportant);
-  form.appendChild(fieldPriority);
 
   // Button Add Item
   const btnAddItem = document.createElement('button');
@@ -101,8 +72,8 @@ export function buildModal(lists) {
         inputTitle.value,
         inputDescription.value,
         inputDue.value,
-        radioPriorityImportant.checked,
       );
+      form.reset();
     }
   });
   form.appendChild(btnAddItem);
@@ -128,13 +99,12 @@ function close() {
   dialogAddItem.close();
 }
 
-function btnAddItemHandler(title, description, dueDate, priority) {
+function btnAddItemHandler(title, description, dueDate) {
   todoController.addItemToActiveList(
     title,
     description,
     dueDate,
-    priority,
   )
-  buildMainUI();
+  refreshMainUI();
   close();
 }

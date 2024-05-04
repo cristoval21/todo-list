@@ -1,17 +1,24 @@
 import { todoController } from "../components/TodoController";
 import { getActiveListIndex, setActiveListIndex } from "../utilities/ActiveListIndex";
+import { refreshMainUI } from "./ScreenController";
 
 export function buildSidebar(contentDiv) {
   const sidebar = document.createElement('div');
   sidebar.classList.add('sidebar');
 
+  
   const sidebarContainer = document.createElement('div');
   sidebarContainer.classList.add('sidebar__container');
-
+  
   sidebar.appendChild(sidebarContainer);
+
+  const sidebarListWrapper = document.createElement('div');
+  sidebarListWrapper.classList.add('sidebar__list-wrapper');
+
+  sidebarContainer.appendChild(sidebarListWrapper);
   
   const sidebarList = retrieveListNames();
-  sidebarContainer.appendChild(sidebarList);
+  sidebarListWrapper.appendChild(sidebarList);
 
   const sidebarActions = document.createElement('div');
   sidebarActions.classList.add('sidebar__actions');
@@ -20,17 +27,18 @@ export function buildSidebar(contentDiv) {
 
   const btnAddList = document.createElement('button');
   btnAddList.type = 'button';
+  btnAddList.classList.add('button');
+  btnAddList.classList.add('button--tertiary');
+  btnAddList.classList.add('button--icon-only');
+  btnAddList.classList.add('las');
+  btnAddList.classList.add('la-plus');
   btnAddList.classList.add('sidebar__button-add-list');
+  btnAddList.addEventListener('click', btnAddListHandler);
 
   sidebarActions.appendChild(btnAddList);
 
-  const btnIcon = document.createElement('span');
-  btnIcon.classList.add('material-symbols-rounded');
-  btnIcon.textContent = 'add';
-
-  btnAddList.appendChild(btnIcon);
-
   const inputAddList = document.createElement('input');
+  inputAddList.classList.add('input');
   inputAddList.classList.add('sidebar__input-add-list');
   inputAddList.type = 'text';
   inputAddList.placeholder = 'List name';
@@ -39,6 +47,14 @@ export function buildSidebar(contentDiv) {
   sidebarActions.appendChild(inputAddList);
 
   contentDiv.appendChild(sidebar);
+}
+
+function refreshSidebar() {
+  const sidebarListWrapper = document.querySelector('.sidebar__list-wrapper');
+  sidebarListWrapper.textContent = '';
+
+  const sidebarList = retrieveListNames();
+  sidebarListWrapper.appendChild(sidebarList);
 }
 
 function retrieveListNames() {
@@ -56,6 +72,7 @@ function retrieveListNames() {
 
     sidebarItem.addEventListener('click', (e) => {
       setActiveItem(e);
+      refreshMainUI();
     });
 
     sidebarList.appendChild(sidebarItem);
@@ -71,4 +88,13 @@ function setActiveItem(event) {
   event.target.classList.toggle('sidebar__item--active');
 
   setActiveListIndex(event.target.dataset.listIndex);
+}
+
+function btnAddListHandler() {
+  const inputAddList = document.querySelector('.sidebar__input-add-list');
+
+  if (inputAddList.value) {
+    todoController.addList(inputAddList.value);
+    refreshSidebar();
+  }
 }

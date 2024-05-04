@@ -11,8 +11,8 @@ export class TodoList {
     return this._listName;
   }
 
-  addItem(title, description, dueDate, priority) {
-    this.#_list.push(new TodoItem(title, description, dueDate, priority));
+  addItem(title, description, dueDate) {
+    this.#_list.push(new TodoItem(title, description, dueDate));
   }
 
   removeItem(itemIndex) {
@@ -37,7 +37,6 @@ export class TodoList {
       item.getTitle(),
       item.getDescription(),
       item.getDueDate(),
-      item.getPriority()
     );
     oldList.removeItem(itemIndex);
   }
