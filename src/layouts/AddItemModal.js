@@ -5,7 +5,7 @@ import { format, isPast } from "date-fns";
 export function buildModal() {
   const dialogAddItem = document.createElement('dialog');
   dialogAddItem.classList.add('dialog');
-  dialogAddItem.classList.add('dialog-add-item__form');
+  dialogAddItem.classList.add('dialog-add-item');
 
   const form = document.createElement('form');
   form.classList.add('form');
@@ -144,12 +144,12 @@ export function buildModal() {
 }
 
 export function show() {
-  const dialogAddItem = document.querySelector('.dialog-add-item__form');
+  const dialogAddItem = document.querySelector('.dialog-add-item');
   dialogAddItem.showModal();
 }
 
 function btnCancelHandler() {
-  const dialogAddItem = document.querySelector('.dialog-add-item__form');
+  const dialogAddItem = document.querySelector('.dialog-add-item');
   dialogAddItem.close();
 }
 

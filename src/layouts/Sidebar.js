@@ -27,19 +27,14 @@ export function buildSidebar(contentDiv) {
 
   const btnAddList = document.createElement('button');
   btnAddList.type = 'button';
-  btnAddList.classList.add('button');
-  btnAddList.classList.add('button--tertiary');
-  btnAddList.classList.add('button--icon-only');
-  btnAddList.classList.add('las');
-  btnAddList.classList.add('la-plus');
-  btnAddList.classList.add('sidebar__button-add-list');
+  btnAddList.classList.add('button', 'button--tertiary', 'button--icon-only', 'sidebar__button-add-list', 'material-symbols-rounded');
+  btnAddList.textContent = 'add';
   btnAddList.addEventListener('click', btnAddListHandler);
 
   sidebarActions.appendChild(btnAddList);
 
   const inputAddList = document.createElement('input');
-  inputAddList.classList.add('input');
-  inputAddList.classList.add('sidebar__input-add-list');
+  inputAddList.classList.add('input', 'sidebar__input-add-list');
   inputAddList.type = 'text';
   inputAddList.placeholder = 'List name';
   inputAddList.id = 'input-add-list';

@@ -49,17 +49,13 @@ function buildHeader() {
   const btnAddItem = document.createElement('button');
   btnAddItem.type = 'button';
   btnAddItem.textContent = 'Add task'
-  btnAddItem.classList.add('button');
-  btnAddItem.classList.add('button--primary');
-  btnAddItem.classList.add('button--with-icon');
-  btnAddItem.classList.add('list__button-add-item');
+  btnAddItem.classList.add('button', 'button--primary', 'button--with-icon', 'list__button-add-item');
   btnAddItem.addEventListener('click', btnAddItemHandler);
   listHeader.appendChild(btnAddItem);
   
   const spanAddItem = document.createElement('span');
-  spanAddItem.classList.add('las');
-  spanAddItem.classList.add('la-plus');
-  spanAddItem.classList.add('button__icon');
+  spanAddItem.classList.add('button__icon', 'material-symbols-rounded');
+  spanAddItem.textContent = 'add';
   btnAddItem.appendChild(spanAddItem);
 
   return listHeader;
@@ -70,7 +66,7 @@ function buildListItems() {
   listItemsContainer.classList.add('list__items-container');
 
   todoController.getActiveList().getAllItems().forEach((item, itemIndex) => {
-    const hasDescription = (item.getDescription()) ? true : false;
+    const title = item.getTitle();
     const isCompleted = item.getCompleted();
     const isStarred = item.getStarred();
 
@@ -81,55 +77,22 @@ function buildListItems() {
 
     listItemsContainer.appendChild(itemContainer);
 
-    // Completed
-    const itemCompleted = document.createElement('input');
-    itemCompleted.type = 'checkbox';
-    itemCompleted.classList.add('item__completed');
-    itemCompleted.checked = isCompleted;
-    
-    itemContainer.appendChild(itemCompleted);
-
-    // Item Input Container
-    const itemInputContainer = document.createElement('div');
-    itemInputContainer.classList.add('item__input-container');
-
-    itemContainer.appendChild(itemInputContainer);
-    
     // Title
-    const itemTitle = document.createElement('input');
-    itemTitle.classList.add('input');
-    itemTitle.classList.add('item__input');
-    itemTitle.classList.toggle('item__input--completed', isCompleted);
-    itemTitle.value = item.getTitle();
-    itemTitle.addEventListener('focusout', () => {
-      if (itemTitle.value) {
-        item.setTitle(itemTitle.value);
-      } else {
-        itemTitle.value = item.getTitle();
-      }
-    });
-    itemTitle.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        if (itemTitle.value) {
-          item.setTitle(itemTitle.value);
-        } else {
-          itemTitle.value = item.getTitle();
-        }
-        document.activeElement.blur();
-      }
-    });
+    const itemTitle = document.createElement('div');
+    itemTitle.classList.add('item__title');
+    itemTitle.classList.toggle('item__title--completed', isCompleted);
+    itemTitle.textContent = title;
+    // itemTitle.addEventListener('focusout', () => {
+    //   validateNewTitle(itemTitle, item, title);
+    // });
+    // itemTitle.addEventListener('keypress', (e) => {
+    //   if (e.key === 'Enter') {
+    //     validateNewTitle(itemTitle, item, title);
+    //     document.activeElement.blur();
+    //   }
+    // });
 
-    itemInputContainer.appendChild(itemTitle);
-
-    // Description
-    // const itemDescription = document.createElement('input');
-    // itemDescription.classList.add('input');
-    // itemDescription.classList.add('input--textarea');
-    // itemDescription.classList.add('item__input');
-    // itemDescription.type = 'textarea';
-    // itemDescription.value = item.getDescription();
-
-    // itemInputContainer.appendChild(itemDescription);
+    itemContainer.appendChild(itemTitle);
 
     // Actions
     const itemActionsContainer = document.createElement('div');
@@ -137,40 +100,50 @@ function buildListItems() {
 
     itemContainer.appendChild(itemActionsContainer);
 
-    // Due Date
-    const itemDueDate = document.createElement('input');
-    itemDueDate.classList.add('input');
-    itemDueDate.classList.add('item__input');
-    itemDueDate.classList.add('item__due-date');
-    itemDueDate.type = 'date';
-    itemDueDate.value = item.getDueDate();
-
-    itemActionsContainer.appendChild(itemDueDate);
-
-    // Item Star
-    const btnItemStar = document.createElement('button');
-    btnItemStar.classList.add('button');
-    btnItemStar.classList.add('button--tertiary');
-    btnItemStar.classList.add('button--icon');
-    btnItemStar.classList.add('item__button-star');
-    btnItemStar.classList.toggle('item__button-star--starred', isStarred);
-    btnItemStar.classList.toggle('las', isStarred);
-    btnItemStar.classList.toggle('lar', !isStarred);
-    btnItemStar.classList.add('la-star');
-    btnItemStar.addEventListener('click', () => {
-      item.toggleStarred();
-      btnItemStar.classList.toggle('item__button-star--starred');
-      btnItemStar.classList.toggle('las');
-      btnItemStar.classList.toggle('lar');
-    });
-
-    itemActionsContainer.appendChild(btnItemStar);
-
-    itemCompleted.addEventListener('change', () => {
+    // Button Completed
+    const btnCompleted = document.createElement('button');
+    btnCompleted.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
+    btnCompleted.classList.toggle('item__button--colored', isCompleted);
+    btnCompleted.classList.toggle('material-symbols-rounded--filled', isCompleted);
+    btnCompleted.textContent = 'check_circle';
+    btnCompleted.addEventListener('click', (e) => {
       item.toggleCompleted();
+      btnCompleted.classList.toggle('material-symbols-rounded--filled');
+      btnCompleted.classList.toggle('item__button--colored');
       itemTitle.classList.toggle('item__title--completed');
+    })
+
+    itemActionsContainer.appendChild(btnCompleted);
+    
+    // Star Item
+    const btnStarItem = document.createElement('button');
+    btnStarItem.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
+    btnStarItem.classList.toggle('item__button--colored', isStarred);
+    btnStarItem.classList.toggle('material-symbols-rounded--filled', isStarred);
+    btnStarItem.textContent = 'star';
+    btnStarItem.addEventListener('click', () => {
+      item.toggleStarred();
+      btnStarItem.classList.toggle('material-symbols-rounded--filled');
+      btnStarItem.classList.toggle('item__button--colored');
     });
+    
+    itemActionsContainer.appendChild(btnStarItem);
+
+    // Edit Item
+    const btnEditItem = document.createElement('button');
+    btnEditItem.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
+    btnEditItem.textContent = 'edit';
+
+    itemActionsContainer.appendChild(btnEditItem);
   });
 
   return listItemsContainer;
+}
+
+function validateNewTitle(itemTitle, item, title) {
+  if (itemTitle.value) {
+    item.setTitle(itemTitle.value);
+  } else {
+    itemTitle.value = title;
+  }
 }
