@@ -1,4 +1,4 @@
-import { formatDistance, formatDistanceToNow } from 'date-fns';
+import { differenceInDays, formatDistance, formatDistanceStrict, formatDistanceToNow, isToday, isTomorrow, isYesterday } from 'date-fns';
 import { todoController } from '../components/TodoController.js';
 import * as AddItemModal from './AddItemModal.js';
 import * as EditItemModal from './EditItemModal.js';
@@ -6,7 +6,7 @@ import * as EditItemModal from './EditItemModal.js';
 export function addMainUI(contentDiv) {
   todoController.addItemToActiveList("test", "", "");
   todoController.addItemToActiveList("test2", "testdesc2", "");
-  todoController.addItemToActiveList("test3", "testdesc3", "2024-05-07");
+  todoController.addItemToActiveList("test3", "testdesc3", "2024-05-09");
   todoController.getActiveList().getItem(0).toggleStarred();
   todoController.getActiveList().getItem(1).toggleCompleted();
   const list = document.createElement('div');
@@ -17,10 +17,10 @@ export function addMainUI(contentDiv) {
   listContainer.classList.add('list__container');
   list.appendChild(listContainer);
 
-  const listHeader = buildHeader();
+  const listHeader = generateHeaderUI();
   listContainer.appendChild(listHeader);
 
-  const listItems = buildListItems();
+  const listItems = generateListItemsUI();
   listContainer.appendChild(listItems);
 }
 
@@ -28,10 +28,10 @@ export function refreshMainUI() {
   const listContainer = document.querySelector('.list__container');
   listContainer.textContent = '';
 
-  const listHeader = buildHeader();
+  const listHeader = generateHeaderUI();
   listContainer.appendChild(listHeader);
 
-  const listItems = buildListItems();
+  const listItems = generateListItemsUI();
   listContainer.appendChild(listItems);
 }
 
@@ -39,7 +39,7 @@ function btnAddItemHandler() {
   AddItemModal.show();
 }
 
-function buildHeader() {
+function generateHeaderUI() {
   const listHeader = document.createElement('div');
   listHeader.classList.add('list__header');
   
@@ -63,12 +63,14 @@ function buildHeader() {
   return listHeader;
 }
 
-function buildListItems() {
+function generateListItemsUI() {
   const listItemsContainer = document.createElement('div');
   listItemsContainer.classList.add('list__items-container');
 
   todoController.getActiveList().getAllItems().forEach((item, itemIndex) => {
     const title = item.getTitle();
+    const description = item.getDescription();
+    const hasDescription = item.getDescription();
     const hasDueDate = item.getDueDate();
     const isCompleted = item.getCompleted();
     const isStarred = item.getStarred();
@@ -76,9 +78,18 @@ function buildListItems() {
     // Container
     const itemContainer = document.createElement('div');
     itemContainer.classList.add('item__container');
+    itemContainer.classList.toggle('item__container--completed', isCompleted);
+    itemContainer.classList.toggle('item__container--starred', isStarred);
+    itemContainer.classList.toggle('item__container--no-description', !hasDescription);
     itemContainer.dataset.itemIndex = itemIndex;
 
     listItemsContainer.appendChild(itemContainer);
+
+    // Item texts
+    const itemTextContainer = document.createElement('div');
+    itemTextContainer.classList.add('item__text-container');
+
+    itemContainer.appendChild(itemTextContainer);
 
     // Title
     const itemTitle = document.createElement('div');
@@ -86,7 +97,16 @@ function buildListItems() {
     itemTitle.classList.toggle('item__title--completed', isCompleted);
     itemTitle.textContent = title;
 
-    itemContainer.appendChild(itemTitle);
+    itemTextContainer.appendChild(itemTitle);
+
+    // Description
+    if (hasDescription) {
+      const itemDescription = document.createElement('div');
+      itemDescription.classList.add('item__description');
+      itemDescription.textContent = description;
+  
+      itemTextContainer.appendChild(itemDescription);
+    }
 
     // Actions
     const itemActionsContainer = document.createElement('div');
@@ -94,12 +114,13 @@ function buildListItems() {
 
     itemContainer.appendChild(itemActionsContainer);
 
+    // Chip Due Date
     const chipDueDate = document.createElement('div');
     chipDueDate.classList.add('chip', 'item__chip', 'item__chip-due-date');
     chipDueDate.style.display = 'none';
     if (hasDueDate) {
       chipDueDate.style.display = 'unset';
-      chipDueDate.textContent = formatDistanceToNow(new Date(item.getDueDate()), { addSuffix: true });
+      chipDueDate.textContent = generateDueDateMessage(item.getDueDate());
     }
 
     itemActionsContainer.appendChild(chipDueDate);
@@ -115,6 +136,7 @@ function buildListItems() {
       btnCompleted.classList.toggle('material-symbols-rounded--filled');
       btnCompleted.classList.toggle('item__button--colored');
       itemTitle.classList.toggle('item__title--completed');
+      itemContainer.classList.toggle('item__container--completed');
     })
 
     itemActionsContainer.appendChild(btnCompleted);
@@ -129,6 +151,7 @@ function buildListItems() {
       item.toggleStarred();
       btnStarItem.classList.toggle('material-symbols-rounded--filled');
       btnStarItem.classList.toggle('item__button--colored');
+      itemContainer.classList.toggle('item__container--starred');
     });
     
     itemActionsContainer.appendChild(btnStarItem);
@@ -145,4 +168,14 @@ function buildListItems() {
   });
 
   return listItemsContainer;
+}
+
+function generateDueDateMessage(dueDate) {
+  if (isYesterday(dueDate)) return 'yesterday';
+  else if (isToday(dueDate)) return 'today';
+  else if (isTomorrow(dueDate)) return 'tomorrow';
+  else return formatDistanceStrict(new Date(dueDate), new Date(), {
+    addSuffix: true,
+    unit: 'day',
+  });
 }

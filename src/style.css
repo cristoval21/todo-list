@@ -2,6 +2,7 @@
   --background-sidebar: #ffffff;
   --background-lists: #f3f4f6;
   --background-item: #ffffff;
+  --background-item--completed: #f9fafb;
   --hover: #e0f2fe;
   --border-active: #38bdf8;
   --background-active: #e0f2fe;
@@ -114,6 +115,7 @@
   border-radius: 0.5em;
   padding: 0.25em;
   font-size: 0.75em;
+  text-transform: uppercase;
 }
 
 .chip--with-icon {
@@ -273,9 +275,42 @@
   border-radius: 10px;
   padding: 1rem;
   box-shadow: var(--shadow-standard);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr max-content;
   align-items: center;
   gap: 0.75em;
+  transition: background-color 300ms ease-in;
+}
+
+.item__container--completed {
+  background-color: var(--background-item--completed);
+}
+
+.item__container--starred {
+  outline: 2px solid var(--border-active);
+}
+
+.item__text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.item__title,
+.item__description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: max(20em, 500px);
+}
+
+.item__title {
+  font-size: 1.25rem;
+}
+
+.item__description {
+  font-size: 0.825rem;
+  color: var(--text-subtle);
 }
 
 .item__title--completed {
