@@ -2,10 +2,9 @@ import { todoController } from "../components/TodoController";
 import { getActiveListIndex, setActiveListIndex } from "../utilities/ActiveListIndex";
 import { refreshMainUI } from "./ScreenController";
 
-export function buildSidebar(contentDiv) {
+export function addSidebar(contentDiv) {
   const sidebar = document.createElement('div');
   sidebar.classList.add('sidebar');
-
   
   const sidebarContainer = document.createElement('div');
   sidebarContainer.classList.add('sidebar__container');

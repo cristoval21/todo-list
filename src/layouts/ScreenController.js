@@ -1,7 +1,9 @@
+import { formatDistance, formatDistanceToNow } from 'date-fns';
 import { todoController } from '../components/TodoController.js';
 import * as AddItemModal from './AddItemModal.js';
+import * as EditItemModal from './EditItemModal.js';
 
-export function buildMainUI(contentDiv) {
+export function addMainUI(contentDiv) {
   todoController.addItemToActiveList("test", "", "");
   todoController.addItemToActiveList("test2", "testdesc2", "");
   todoController.addItemToActiveList("test3", "testdesc3", "2024-05-07");
@@ -67,6 +69,7 @@ function buildListItems() {
 
   todoController.getActiveList().getAllItems().forEach((item, itemIndex) => {
     const title = item.getTitle();
+    const hasDueDate = item.getDueDate();
     const isCompleted = item.getCompleted();
     const isStarred = item.getStarred();
 
@@ -82,15 +85,6 @@ function buildListItems() {
     itemTitle.classList.add('item__title');
     itemTitle.classList.toggle('item__title--completed', isCompleted);
     itemTitle.textContent = title;
-    // itemTitle.addEventListener('focusout', () => {
-    //   validateNewTitle(itemTitle, item, title);
-    // });
-    // itemTitle.addEventListener('keypress', (e) => {
-    //   if (e.key === 'Enter') {
-    //     validateNewTitle(itemTitle, item, title);
-    //     document.activeElement.blur();
-    //   }
-    // });
 
     itemContainer.appendChild(itemTitle);
 
@@ -99,6 +93,16 @@ function buildListItems() {
     itemActionsContainer.classList.add('item__actions-container');
 
     itemContainer.appendChild(itemActionsContainer);
+
+    const chipDueDate = document.createElement('div');
+    chipDueDate.classList.add('chip', 'item__chip', 'item__chip-due-date');
+    chipDueDate.style.display = 'none';
+    if (hasDueDate) {
+      chipDueDate.style.display = 'unset';
+      chipDueDate.textContent = formatDistanceToNow(new Date(item.getDueDate()), { addSuffix: true });
+    }
+
+    itemActionsContainer.appendChild(chipDueDate);
 
     // Button Completed
     const btnCompleted = document.createElement('button');
@@ -133,17 +137,12 @@ function buildListItems() {
     const btnEditItem = document.createElement('button');
     btnEditItem.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
     btnEditItem.textContent = 'edit';
+    btnEditItem.addEventListener('click', () => {
+      EditItemModal.show(itemIndex);
+    })
 
     itemActionsContainer.appendChild(btnEditItem);
   });
 
   return listItemsContainer;
-}
-
-function validateNewTitle(itemTitle, item, title) {
-  if (itemTitle.value) {
-    item.setTitle(itemTitle.value);
-  } else {
-    itemTitle.value = title;
-  }
 }

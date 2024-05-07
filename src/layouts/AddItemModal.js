@@ -2,7 +2,7 @@ import { refreshMainUI } from "./ScreenController";
 import { todoController } from "../components/TodoController";
 import { format, isPast } from "date-fns";
 
-export function buildModal() {
+export function addModal() {
   const dialogAddItem = document.createElement('dialog');
   dialogAddItem.classList.add('dialog');
   dialogAddItem.classList.add('dialog-add-item');
