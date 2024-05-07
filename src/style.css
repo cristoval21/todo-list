@@ -2,6 +2,7 @@
   --background-sidebar: #ffffff;
   --background-lists: #f3f4f6;
   --background-item: #ffffff;
+  --background-item--completed: #f9fafb;
   --hover: #e0f2fe;
   --border-active: #38bdf8;
   --background-active: #e0f2fe;
@@ -9,8 +10,10 @@
   --tertiary-hover: #0ea5e9;
   --on-dark: #ffffff;
   --shadow-standard: rgba(0, 0, 0, 0.04) 0px 3px 5px;
-  --border-subtle: #d1d5db;
+  --border-normal: #000000;
+  --border-subtle: #9ca3af;
   --border-invalid: #ef4444;
+  --text-subtle: #9ca3af;
 }
 
 * {
@@ -18,10 +21,28 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inter var', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-feature-settings: "cv02","cv03","cv04","cv11";
 }
 
 .page-container {
   display: flex;
+}
+
+/* Material symbols */
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.material-symbols-rounded--filled {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }
 
 /* Button */
@@ -29,9 +50,16 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.5em 1em;
   border-radius: 500px;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: all 100ms ease-in;
+}
+
+.button:active {
+  transform: scale(98%) translateY(5%);
 }
 
 .button__icon {
@@ -47,6 +75,12 @@
   background-color: var(--tertiary-hover);
 }
 
+.button--secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-subtle);
+}
+
+
 .button--tertiary {
   background-color: transparent;
 }
@@ -55,15 +89,38 @@
   background-color: var(--hover);
 }
 
+.button--subtle {
+  border: 1px solid var(--border-subtle);
+  color: var(--text-subtle);
+}
+
+.button--small {
+  font-size: 0.75em;
+  padding: 0.5em 1em;
+}
+
 .button--with-icon {
-  display: flex;
   gap: 0.25em;
 }
 
 .button--icon-only {
-  padding: 0;
-  border-radius: 100%;
+  padding: 0.25rem;
+  border-radius: 50%;
   font-size: 1.5em;
+}
+
+/* Chip */
+.chip {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5em;
+  padding: 0.25em;
+  font-size: 0.75em;
+  text-transform: uppercase;
+}
+
+.chip--with-icon {
+  display: flex;
+  gap: 0.25em;
 }
 
 /* Dialog */
@@ -81,6 +138,7 @@
   border: none;
   font-size: 1rem;
   padding: 0.5rem;
+  width: 100%;
 }
 
 .input:focus {
@@ -93,27 +151,18 @@
 
 /* Form */
 .form {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr;
-  /* grid-auto-flow: column; */
+  display: flex;
+  flex-direction: column;
   gap: 0.75em;
 }
 
 .form__header {
-  grid-column: 1 / -1;
   margin-block-end: 10px;
 }
 
-.form__field {
-  grid-template-columns: subgrid;
-  display: grid;
-  grid-column: 1 / -1;
-  align-items: center;
-}
-
 .form__label {
-  font-weight: bold;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
 }
 
 .form__input {
@@ -213,18 +262,69 @@
   font-size: 1.25rem;
   margin-inline-start: auto;
   display: flex;
-  align-items: center;
 }
 
 .list__items-container {
   padding-block-start: 1rem;
   display: grid;
-  gap: 20px;
+  gap: 10px;
 }
 
 .item__container {
   background-color: var(--background-item);
   border-radius: 10px;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   box-shadow: var(--shadow-standard);
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  gap: 0.75em;
+  transition: background-color 300ms ease-in;
+}
+
+.item__container--completed {
+  background-color: var(--background-item--completed);
+}
+
+.item__container--starred {
+  outline: 2px solid var(--border-active);
+}
+
+.item__text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.item__title,
+.item__description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: max(20em, 500px);
+}
+
+.item__title {
+  font-size: 1.25rem;
+}
+
+.item__description {
+  font-size: 0.825rem;
+  color: var(--text-subtle);
+}
+
+.item__title--completed {
+  text-decoration: line-through;
+  color: var(--text-subtle);
+}
+
+.item__actions-container {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.item__button--colored {
+  color: var(--tertiary);
 }
