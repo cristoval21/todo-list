@@ -2,14 +2,20 @@ import { TodoList } from './TodoList.js';
 import { getActiveListIndex } from '../utilities/ActiveListIndex.js';
 
 export const todoController = function() {
+  // localStorage.clear();
   let lists = [];
+  if (localStorage.length) {
+    for (let i = 0; i < localStorage.length; i++) {
+      lists.push(new TodoList(localStorage.key(i)));
+    }
+  }
 
-  function addItem(title, description, dueDate, listIndex) {
-    lists[listIndex].addItem(title, description, dueDate);
+  function addItem(listIndex, title, description, dueDate, starred = false, completed = false) {
+    lists[listIndex].addItem(title, description, dueDate, starred, completed);
   }
   
-  function addItemToActiveList(title, description, dueDate) {
-    lists[getActiveListIndex()].addItem(title, description, dueDate);
+  function addItemToActiveList(title, description, dueDate, starred = false, completed = false) {
+    lists[getActiveListIndex()].addItem(title, description, dueDate, starred, completed);
   }
 
   function addList(listName) {

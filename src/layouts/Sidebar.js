@@ -91,6 +91,11 @@ function btnAddListHandler() {
 
   if (inputAddList.value) {
     todoController.addList(inputAddList.value);
+
+    // Save to localStorage
+    localStorage.setItem(inputAddList.value, '');
+
+    // Refresh UI
     refreshMainUI();
     refreshSidebar();
   }

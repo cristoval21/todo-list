@@ -159,6 +159,15 @@ function btnAddItemHandler(title, description, dueDate) {
     description,
     dueDate,
   )
+
+  // Save to localStorage
+  const items = [];
+  todoController.getActiveList().getAllItems().forEach(item => {
+    items.push(item.getObject());
+  });
+  localStorage.setItem(todoController.getActiveList().getName(), JSON.stringify(items));
+
+  // Refresh UI
   refreshMainUI();
   btnCancelHandler();
 }
