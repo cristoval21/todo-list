@@ -4,11 +4,12 @@ import * as AddItemModal from './AddItemModal.js';
 import * as EditItemModal from './EditItemModal.js';
 
 export function addMainUI(contentDiv) {
-  todoController.addItemToActiveList("test", "", "");
-  todoController.addItemToActiveList("test2", "testdesc2", "");
-  todoController.addItemToActiveList("test3", "testdesc3", "2024-05-09");
-  todoController.getActiveList().getItem(0).toggleStarred();
-  todoController.getActiveList().getItem(1).toggleCompleted();
+  // todoController.addItemToActiveList("test", "", "");
+  // todoController.addItemToActiveList("test2", "testdesc2", "");
+  // todoController.addItemToActiveList("test3", "testdesc3", "2024-05-09");
+  // todoController.getActiveList().getItem(0).toggleStarred();
+  // todoController.getActiveList().getItem(1).toggleCompleted();
+
   const list = document.createElement('div');
   list.classList.add('list');
   contentDiv.appendChild(list);
@@ -17,11 +18,13 @@ export function addMainUI(contentDiv) {
   listContainer.classList.add('list__container');
   list.appendChild(listContainer);
 
-  const listHeader = generateHeaderUI();
-  listContainer.appendChild(listHeader);
-
-  const listItems = generateListItemsUI();
-  listContainer.appendChild(listItems);
+  if (todoController.hasLists()) {
+    const listHeader = generateHeaderUI();
+    listContainer.appendChild(listHeader);
+  
+    const listItems = generateListItemsUI();
+    listContainer.appendChild(listItems);
+  }
 }
 
 export function refreshMainUI() {

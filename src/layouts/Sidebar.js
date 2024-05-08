@@ -16,8 +16,10 @@ export function addSidebar(contentDiv) {
 
   sidebarContainer.appendChild(sidebarListWrapper);
   
-  const sidebarList = retrieveListNames();
-  sidebarListWrapper.appendChild(sidebarList);
+  if (todoController.hasLists()) {
+    const sidebarList = retrieveListNames();
+    sidebarListWrapper.appendChild(sidebarList);
+  }
 
   const sidebarActions = document.createElement('div');
   sidebarActions.classList.add('sidebar__actions');
@@ -77,7 +79,7 @@ function retrieveListNames() {
 
 function setActiveItem(event) {
   const currentlyActive = document.querySelector('.sidebar__item--active');
-  currentlyActive?.classList.toggle('sidebar__item--active');
+  currentlyActive.classList.toggle('sidebar__item--active');
 
   event.target.classList.toggle('sidebar__item--active');
 
@@ -89,6 +91,7 @@ function btnAddListHandler() {
 
   if (inputAddList.value) {
     todoController.addList(inputAddList.value);
+    refreshMainUI();
     refreshSidebar();
   }
 }
