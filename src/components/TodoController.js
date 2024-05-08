@@ -2,9 +2,7 @@ import { TodoList } from './TodoList.js';
 import { getActiveListIndex } from '../utilities/ActiveListIndex.js';
 
 export const todoController = function() {
-  let lists = [
-    new TodoList('My List'),
-  ];
+  let lists = [];
 
   function addItem(title, description, dueDate, listIndex) {
     lists[listIndex].addItem(title, description, dueDate);
@@ -30,12 +28,17 @@ export const todoController = function() {
     return lists;
   }
 
+  function hasLists() {
+    return lists.length;
+  }
+
   return {
     addItem,
     addItemToActiveList,
     addList,
     getList,
     getAllLists,
-    getActiveList
+    getActiveList,
+    hasLists
   };
 }();
