@@ -156,6 +156,17 @@ function generateListItemsUI() {
     
     itemActionsContainer.appendChild(btnStarItem);
 
+    // Delete Item
+    const btnDeleteItem = document.createElement('button');
+    btnDeleteItem.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
+    btnDeleteItem.textContent = 'delete';
+    btnDeleteItem.addEventListener('click', () => {
+      todoController.getActiveList().removeItem(itemIndex);
+      refreshMainUI();
+    })
+
+    itemActionsContainer.appendChild(btnDeleteItem);
+
     // Edit Item
     const btnEditItem = document.createElement('button');
     btnEditItem.classList.add('button', 'button--tertiary', 'button--icon-only', 'material-symbols-rounded');
