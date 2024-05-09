@@ -11,8 +11,8 @@ export class TodoList {
     return this._listName;
   }
 
-  addItem(title, description, dueDate) {
-    this.#_list.push(new TodoItem(title, description, dueDate));
+  addItem(title, description, dueDate, starred, completed) {
+    this.#_list.push(new TodoItem(title, description, dueDate, starred, completed));
   }
 
   removeItem(itemIndex) {

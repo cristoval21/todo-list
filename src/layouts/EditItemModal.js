@@ -1,6 +1,7 @@
 import { refreshMainUI } from './ScreenController';
 import { todoController } from '../components/TodoController';
 import { format } from 'date-fns';
+import { updateActiveListToLocal } from '../utilities/LocalStorage';
 
 let currentItem = null;
 
@@ -131,6 +132,7 @@ function btnEditItemHandler(newTitle, newDescription, newDueDate) {
   if (newDescription != currentDescription) currentItem.setDescription(newDescription);
   if (newDueDate != currentDueDate) currentItem.setDueDate(newDueDate);
 
+  updateActiveListToLocal();
   refreshMainUI();
   btnCancelHandler();
 }
