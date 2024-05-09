@@ -1,5 +1,6 @@
 import { todoController } from "../components/TodoController";
 import { getActiveListIndex, setActiveListIndex } from "../utilities/ActiveListIndex";
+import { saveListToLocal } from "../utilities/LocalStorage";
 import { refreshMainUI } from "./ScreenController";
 
 export function addSidebar(contentDiv) {
@@ -93,7 +94,7 @@ function btnAddListHandler() {
     todoController.addList(inputAddList.value);
 
     // Save to localStorage
-    localStorage.setItem(inputAddList.value, '');
+    saveListToLocal(inputAddList.value);
 
     // Refresh UI
     refreshMainUI();

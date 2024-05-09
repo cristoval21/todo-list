@@ -1,6 +1,7 @@
 import { refreshMainUI } from "./ScreenController";
 import { todoController } from "../components/TodoController";
 import { format, isPast } from "date-fns";
+import { updateActiveListToLocal } from "../utilities/LocalStorage";
 
 export function addModal() {
   const dialogAddItem = document.createElement('dialog');
@@ -161,11 +162,7 @@ function btnAddItemHandler(title, description, dueDate) {
   )
 
   // Save to localStorage
-  const items = [];
-  todoController.getActiveList().getAllItems().forEach(item => {
-    items.push(item.getObject());
-  });
-  localStorage.setItem(todoController.getActiveList().getName(), JSON.stringify(items));
+  updateActiveListToLocal();
 
   // Refresh UI
   refreshMainUI();

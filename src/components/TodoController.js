@@ -1,12 +1,14 @@
 import { TodoList } from './TodoList.js';
 import { getActiveListIndex } from '../utilities/ActiveListIndex.js';
+import { getListItemsFromLocal, getListNameFromLocal, isLocalStorageEmpty } from '../utilities/LocalStorage.js';
 
 export const todoController = function() {
-  // localStorage.clear();
+  // Fill lists from localStorage
   let lists = [];
-  if (localStorage.length) {
+  if (!isLocalStorageEmpty()) {
     for (let i = 0; i < localStorage.length; i++) {
-      lists.push(new TodoList(localStorage.key(i)));
+      const todoList = retrieveTodoList(i);
+      lists.push(todoList);
     }
   }
 
@@ -48,3 +50,15 @@ export const todoController = function() {
     hasLists
   };
 }();
+
+function retrieveTodoList(i) {
+  const todoList = new TodoList(getListNameFromLocal(i));
+
+  getListItemsFromLocal(i).forEach(item => {
+    const { title, description, dueDate, starred, completed } = item;
+
+    todoList.addItem(title, description, dueDate, starred, completed);
+  });
+
+  return todoList;
+}

@@ -2,6 +2,7 @@ import { differenceInDays, formatDistance, formatDistanceStrict, formatDistanceT
 import { todoController } from '../components/TodoController.js';
 import * as AddItemModal from './AddItemModal.js';
 import * as EditItemModal from './EditItemModal.js';
+import { updateActiveListToLocal } from '../utilities/LocalStorage.js';
 
 export function addMainUI(contentDiv) {
   // todoController.addItemToActiveList("test", "", "");
@@ -140,6 +141,7 @@ function generateListItemsUI() {
       btnCompleted.classList.toggle('item__button--colored');
       itemTitle.classList.toggle('item__title--completed');
       itemContainer.classList.toggle('item__container--completed');
+      updateActiveListToLocal();
     })
 
     itemActionsContainer.appendChild(btnCompleted);
@@ -155,6 +157,7 @@ function generateListItemsUI() {
       btnStarItem.classList.toggle('material-symbols-rounded--filled');
       btnStarItem.classList.toggle('item__button--colored');
       itemContainer.classList.toggle('item__container--starred');
+      updateActiveListToLocal();
     });
     
     itemActionsContainer.appendChild(btnStarItem);
@@ -165,6 +168,7 @@ function generateListItemsUI() {
     btnDeleteItem.textContent = 'delete';
     btnDeleteItem.addEventListener('click', () => {
       todoController.getActiveList().removeItem(itemIndex);
+      updateActiveListToLocal();
       refreshMainUI();
     })
 
